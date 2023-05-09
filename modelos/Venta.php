@@ -1,6 +1,6 @@
 <?php
 
-class Ventas
+class Venta
 {
     public $descuento_id, $valor_sin_descuento, $valor_con_descuento;
     private $id;

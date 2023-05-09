@@ -5,7 +5,7 @@ require_once __DIR__."/../conexion/conexion.php";
 class DescuentosConsultas
 {   
     //COMMIT DE PRUEBA Y PUSH v2
-    public function getAll()
+    public function todos()
     {
         $conexion = new Conexion();
 
@@ -17,7 +17,7 @@ class DescuentosConsultas
     }
 
 
-    public function buscar($valor, $columna)
+    public function buscar($valor, $columna = 'id')
     {
         $conexion = new Conexion();
 
