@@ -3,7 +3,8 @@
 require_once __DIR__."/../conexion/conexion.php";
 
 class DescuentosConsultas
-{
+{   
+    //COMMIT DE PRUEBA Y PUSH
     public function getAll()
     {
         $conexion = new Conexion();
