@@ -60,7 +60,7 @@ class Descuento
         return $this->precio_maximo;
     }
 
-    public function getDescuento($descuento)
+    public function getDescuento()
     {
         return $this->descuento;
     }

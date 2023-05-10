@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../modelos/Descuentos.php";
+require_once __DIR__."/../modelos/Descuento.php";
 require_once __DIR__."/../consultas/DescuentosConsultas.php";
 
 class DescuentosControlador
@@ -16,7 +16,7 @@ class DescuentosControlador
             $listado['descuentos'][] = $descuento; 
         }
 
-        return $listado;
+        return $listado ?? null;
     }
 }
 ?>

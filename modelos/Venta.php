@@ -2,14 +2,14 @@
 
 class Venta
 {
-    public $descuento_id, $valor_sin_descuento, $valor_con_descuento;
+    public $descuento_id, $valor_sin_descuento, $valor_a_descontar;
     private $id;
 
-    function __construct($id,$descuento_id, $valor_sin_descuento)
+    function __construct($descuento_id = null, $valor_sin_descuento,$valor_a_descontar)
     {
-        $this->setId($id);
         $this->setDescuentoId($descuento_id);
         $this->setValorSinDescuento($valor_sin_descuento);
+        $this->setValorADescontar($valor_a_descontar);
     }
 
     //setters
@@ -27,11 +27,10 @@ class Venta
         $this->valor_sin_descuento = $valor_sin_descuento;
     }
 
-    // public function setValorConDescuento()
-    // {
-    //     $valor_sin_descuento = $this->getValorSinDescuento();
-    //     $valor_con_descuento = 
-    // }
+    public function setValorADescontar($valor_a_descontar)
+    {
+        $this->valor_a_descontar = $valor_a_descontar;
+    }
 
     //getters 
     public function getId()
@@ -47,6 +46,20 @@ class Venta
     public function getValorSinDescuento()
     {
         return $this->valor_sin_descuento;
+    }
+
+    public function getValorADescontar()
+    {
+        return $this->valor_a_descontar;
+    }
+
+    public function guardar()
+    {
+        require_once __DIR__."/../consultas/VentasConsultas.php";
+        $ventaConsultas = new VentasConsultas();
+        return $ventaConsultas->guardar($this->getDescuentoId(),$this->getValorSinDescuento(),$this->getValorADescontar());
+
+
     }
 }
 

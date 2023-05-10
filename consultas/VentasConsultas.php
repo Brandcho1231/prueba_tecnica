@@ -28,18 +28,18 @@ class VentasConsultas
         return $conexion->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function guardar($descuento_id, $valor_sin_descuento)
+    public function guardar($descuento_id, $valor_sin_descuento, $valor_a_descontar)
     {
         $conexion = new Conexion();
 
         $conexion = $conexion->conexion()->prepare("INSERT INTO `ventas`
-        (`descuento_id`, `valor_sin_descuento`) 
-        VALUES (':descuento_id', ':valor_sin_descuento')");
+        (`descuento_id`, `valor_sin_descuento`, `valor_a_descontar`) 
+        VALUES (:descuento_id, :valor_sin_descuento, :valor_a_descontar)");
         $conexion -> bindValue(":descuento_id", $descuento_id, PDO::PARAM_STR);
         $conexion -> bindValue(":valor_sin_descuento", $valor_sin_descuento, PDO::PARAM_STR);
-        $conexion->execute();
+        $conexion -> bindValue(":valor_a_descontar", $valor_a_descontar, PDO::PARAM_STR);
 
-        return $conexion->fetch(PDO::FETCH_ASSOC);
+        return $conexion->execute();
     }
 }
 
