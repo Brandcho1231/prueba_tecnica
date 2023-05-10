@@ -38,7 +38,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         $valorADescontar = intval($_POST['valor_a_descontar']);
                         $valorSinDescuento = intval($_POST['valor_sin_descuento']);
                         $venta = new VentasControlador();
-                        echo json_encode($venta->guardarVenta($_POST['consola'], $valorADescontar, $valorSinDescuento));
+                        echo json_encode($venta->guardarVenta($_POST['consola'], $valorSinDescuento,$valorADescontar));
                     }else {
                         header('Content-Type: application/json');
                         $error = [
