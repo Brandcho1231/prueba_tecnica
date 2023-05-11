@@ -31,9 +31,10 @@ class VentasControlador
                 'status' => 'error',
                 'error_id' => '400',
                 'error_msg' => 'Datos incorrectos',
+                'bandera' => 'Bandera',
             ];
         }else {
-            $modeloDescuento = new Descuento($descuento['id'], $descuento['consola'], $descuento['precio_minimo'], $descuento['precio_maximo'], $descuento['descuento']);
+            $modeloDescuento = new Descuento($descuento['id'], $descuento['consola'], $descuento['precio_minimo'], $descuento['precio_maximo'], $descuento['porcentaje']);
         if ($modeloDescuento->getPrecioMaximo() == null) {
             $precioMaximo = $valor;
         } else {
@@ -41,21 +42,21 @@ class VentasControlador
         }
         if ($valor >= $modeloDescuento->getPrecioMinimo() && $valor <= $precioMaximo) {
             
-            $porcentaje = $modeloDescuento->getDescuento() / 100;
+            $porcentaje = $modeloDescuento->getPorcentaje() / 100;
             $valorADescontar = $valor * $porcentaje;
             $valorDescuento = $valor - $valorADescontar;
 
             $array = [
                 'valor_sin_descuento' => $valor,
-                'valor_descuento' => $valorDescuento,
-                'valor_a_descontar' => $valorADescontar,
+                'valor_descuento' => intval($valorDescuento),
+                'valor_a_descontar' => intval($valorADescontar),
                 'consola' => $modeloDescuento->getConsola(),
             ];
         } else {
             $array = [
                 'valor_sin_descuento' => $valor,
                 'valor_descuento' => $valor,
-                'valorADescontar' => 0,
+                'valor_a_descontar' => 0,
                 'consola' => $modeloDescuento->getConsola(),
             ];
         }
@@ -72,11 +73,11 @@ class VentasControlador
             header('Content-Type: application/json');
             $respuesta = [
                 'status' => 'error',
-                'error_id' => '400',
+                'status_id' => '400',
                 'error_msg' => 'Datos incorrectos',
             ];
         }else {
-            $modeloDescuento = new Descuento($descuento['id'], $descuento['consola'], $descuento['precio_minimo'], $descuento['precio_maximo'], $descuento['descuento']);
+            $modeloDescuento = new Descuento($descuento['id'], $descuento['consola'], $descuento['precio_minimo'], $descuento['precio_maximo'], $descuento['porcentaje']);
         if ($modeloDescuento->getPrecioMaximo() == null) {
             $precioMaximo = $valor_sin_descuento;
         } else {
@@ -84,21 +85,21 @@ class VentasControlador
         }
 
         if ($valor_sin_descuento >= $modeloDescuento->getPrecioMinimo() && $valor_sin_descuento <= $precioMaximo) {
-            $porcentaje = $modeloDescuento->getDescuento() / 100;
+            $porcentaje = $modeloDescuento->getPorcentaje() / 100;
             $valorADescontar = $valor_sin_descuento * $porcentaje;
             $valorDescuento = $valor_sin_descuento - $valorADescontar;
-            $venta = new Venta($modeloDescuento->getId(), $valor_sin_descuento, $valorADescontar);
+            $venta = new Venta($modeloDescuento->getId(),$modeloDescuento->getId(), $valor_sin_descuento, $valorADescontar);
             $resultado = $venta->guardar();
             if ($resultado) {
                 $respuesta = [
                     'status' => 'success',
-                    'status' => '201',
+                    'status_id' => '201',
                     'msg' => 'Se registro la venta',
                 ];
             } else {
                 $respuesta = [
                     'status' => 'error',
-                    'status' => '409',
+                    'status_id' => '409',
                     'msg' => 'No se pudo registrar la venta, intentalo nuevamente',
                 ];
             }
@@ -108,13 +109,13 @@ class VentasControlador
             if ($resultado) {
                 $respuesta = [
                     'status' => 'success',
-                    'status' => '201',
+                    'status_id' => '201',
                     'msg' => 'Se registro la venta',
                 ];
             } else {
                 $respuesta = [
                     'status' => 'error',
-                    'status' => '409',
+                    'status_id' => '409',
                     'msg' => 'No se pudo registrar la venta, intentalo nuevamente',
                 ];
             }
@@ -129,11 +130,13 @@ class VentasControlador
         $ventas = $this->listarVentas();
         if ($ventas == null) {
             $respuesta = [
+                'status' => 'success',
                 'descuentoTotal' => 0,
             ];
         } else {
             $descuentoTotal = array_sum(array_column($ventas['ventas'], 'valor_a_descontar'));
             $respuesta = [
+                'status' => 'success',
                 'descuentoTotal' => $descuentoTotal,
             ];
         }

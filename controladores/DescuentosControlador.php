@@ -12,8 +12,9 @@ class DescuentosControlador
         $listadoDescuentos = $descuentosConsulta->todos();
 
         foreach ($listadoDescuentos as $key => $value) {
-            $descuento = new Descuento($value['id'], $value['consola'],$value['precio_minimo'],$value['precio_maximo'], $value['descuento']);
-            $listado['descuentos'][] = $descuento; 
+            $descuento = new Descuento($value['id'], $value['consola'],$value['precio_minimo'],$value['precio_maximo'], $value['porcentaje']);
+            $listado['descuentos'][] = $descuento;
+            $listado['status'] = "success"; 
         }
 
         return $listado ?? null;

@@ -2,16 +2,16 @@
 
 class Descuento
 {
-    public $consola, $precio_minimo, $precio_maximo, $descuento;
+    public $consola, $precio_minimo, $precio_maximo, $porcentaje;
     private $id;
 
-    function __construct($id,$consola, $precio_minimo, $precio_maximo, $descuento)
+    function __construct($id,$consola, $precio_minimo, $precio_maximo,$porcentaje)
     {
         $this->setId($id);
         $this->setConsola($consola);
         $this->setPrecioMinimo($precio_minimo);
+        $this->setPorcentaje($porcentaje);
         $this->setPrecioMaximo($precio_maximo);
-        $this->setDescuento($descuento);
     }
 
     //setters
@@ -29,14 +29,14 @@ class Descuento
         $this->precio_minimo = $precio_minimo;
     }
 
+    public function setPorcentaje($porcentaje)
+    {
+        $this->porcentaje = $porcentaje;
+    }
+
     public function setPrecioMaximo($precio_maximo)
     {
         $this->precio_maximo = $precio_maximo;
-    }
-
-    public function setDescuento($descuento)
-    {
-        $this->descuento = $descuento;
     }
 
     //getters 
@@ -55,14 +55,14 @@ class Descuento
         return $this->precio_minimo;
     }
 
+    public function getPorcentaje()
+    {
+        return $this->porcentaje;
+    }
+
     public function getPrecioMaximo()
     {
         return $this->precio_maximo;
-    }
-
-    public function getDescuento()
-    {
-        return $this->descuento;
     }
 }
 ?>
