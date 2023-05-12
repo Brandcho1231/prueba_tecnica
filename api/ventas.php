@@ -49,12 +49,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($error);
                 }
             } elseif ($_POST['funcion'] == 'guardar') {
-                if (isset($_POST['consola']) && isset($_POST['valor_sin_descuento']) && isset($_POST['valor_a_descontar'])) {
-                    if (is_string($_POST['consola']) && is_numeric($_POST['valor_sin_descuento']) && is_numeric($_POST['valor_a_descontar'])) {
-                        $valorADescontar = intval($_POST['valor_a_descontar']);
-                        $valorSinDescuento = intval($_POST['valor_sin_descuento']);
+                if (isset($_POST['consola']) && isset($_POST['valor']) ) {
+                    if (is_string($_POST['consola']) && is_numeric($_POST['valor'])) {
+                        $valor = intval($_POST['valor']);
                         $venta = new VentasControlador();
-                        echo json_encode($venta->guardarVenta($_POST['consola'], $valorSinDescuento, $valorADescontar));
+                        echo json_encode($venta->guardarVenta($_POST['consola'], $valor));
                     } else {
                         header('Content-Type: application/json');
                         $error = [

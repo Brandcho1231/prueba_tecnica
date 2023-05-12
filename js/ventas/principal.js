@@ -6,9 +6,11 @@ const rutaListadoDescuentos = "api/descuentos";
 const selectConsola = "#selectConsola";
 const formRegistroVenta = "#formRegistroVenta";
 const valorJuego = "#valorJuego";
+const labelDescuento = "#labelDescuento";
 
 $(_ => {
     listadoVentas();
+    descuentoTotal();
 })
 
 $(document).on("click", `#btnRegistrar`, function () {
@@ -30,7 +32,6 @@ $(document).on("click", `#btnRegistrar`, function () {
             dataType: "json",
             data: formData,
             success: function (data) {
-                console.log(data);
                 Swal.fire({
                     title: '¿Desea confirmar la compra?',
                     text: "Cobrar al cliente: "+data.valor_descuento,
@@ -40,7 +41,7 @@ $(document).on("click", `#btnRegistrar`, function () {
                     denyButtonText: `Cancelar`,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        registrarVenta(data.valor_a_descontar);
+                        registrarVenta();
                     } else if (result.isDenied) {
                         Swal.fire('Se declino la compra', '', 'info')
                     }
@@ -50,12 +51,11 @@ $(document).on("click", `#btnRegistrar`, function () {
     }
 });
 
-const registrarVenta = (valor_a_descontar) => {
+const registrarVenta = () => {
     let formData = {
         funcion: 'guardar',
         consola: $(selectConsola).val(),
-        valor_sin_descuento: $(valorJuego).val(),
-        valor_a_descontar: valor_a_descontar
+        valor: $(valorJuego).val(),
     }
     $.ajax({
         "url": rutaVentas,
@@ -67,12 +67,27 @@ const registrarVenta = (valor_a_descontar) => {
                 Swal.fire(data.msg, '', data.status);
                 $(tablaVentas).DataTable().ajax.reload(null, false);
                 $(modalRegistro).modal("hide");
+                descuentoTotal();
             }else{
                 Swal.fire(data.msg, '', data.status);
             }
         },
     });
 };
+
+const descuentoTotal = () => {
+    $.ajax({
+        "url": rutaVentas+"?funcion=descuento_total",
+        type: "get",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            if (data.status == "success") {
+                $(labelDescuento).text(data.descuentoTotal);
+            }
+        },
+    });
+}
 
 const listadoVentas = () => {
     $(tablaVentas).DataTable({
@@ -93,7 +108,6 @@ const listadoVentas = () => {
                 "data": "descuento",
                 "name": "descuento",
                 "render": function ( data, type, row, meta ) {
-                    console.log(data);
                     if (data == null) {
                         return null;
                     }else{

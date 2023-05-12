@@ -12,12 +12,12 @@ class VentasControlador
         $ventasConsulta = new VentasConsultas();
         $listadoVentas = $ventasConsulta->todos();
 
+        $listado['status'] = "success";
         foreach ($listadoVentas as $key => $value) {
             $venta = new Venta($value['descuento_id'], $value['valor_sin_descuento'], $value['valor_a_descontar']);
             $venta->setId($value['id']);
             $listado['ventas'][] = $venta;
         }
-
         return $listado ?? null;
     }
 
@@ -65,7 +65,7 @@ class VentasControlador
         return $array;
     }
 
-    public function guardarVenta($consola, $valor_sin_descuento, $valor_a_descontar)
+    public function guardarVenta($consola, $valor_sin_descuento)
     {
         $descuento = new DescuentosConsultas();
         $descuento = $descuento->buscar($consola, 'consola');
@@ -88,7 +88,7 @@ class VentasControlador
             $porcentaje = $modeloDescuento->getPorcentaje() / 100;
             $valorADescontar = $valor_sin_descuento * $porcentaje;
             $valorDescuento = $valor_sin_descuento - $valorADescontar;
-            $venta = new Venta($modeloDescuento->getId(),$modeloDescuento->getId(), $valor_sin_descuento, $valorADescontar);
+            $venta = new Venta($modeloDescuento->getId(), $valor_sin_descuento, $valorADescontar);
             $resultado = $venta->guardar();
             if ($resultado) {
                 $respuesta = [
